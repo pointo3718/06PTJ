@@ -28,7 +28,7 @@ public class PurchaseDaoImpl implements PurchaseDAO{
 	
 	///Constructor
 	public PurchaseDaoImpl() {
-		System.out.println(this.getClass());
+		System.out.println(this.getClass());	
 	}
 
 	///Method
@@ -51,24 +51,17 @@ public class PurchaseDaoImpl implements PurchaseDAO{
 		sqlSession.update("PurchaseMapper.updateTranCode",purchase);
 	}
 	
-	public Map<String,Object> getPurchaseList(Search search, String buyerId)  throws Exception {		
-		
-		Map<String,Object> map = new HashMap<String,Object>();
-		search.setSearchKeyword(buyerId);		
-		List<Purchase> list = 	sqlSession.selectList("PurchaseMapper.getPurchaseList", search);
-		
-//		int totalProductCount = sqlSession.selectOne("PurchaseMapper.getCountPurchase", buyerId);	
-	
-//		map.put("count", new Integer(totalProductCount));
-		map.put("list", list);
-
-		
-		return map;
+	public List<Purchase> getPurchaseList(Search search, String buyerId) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("buyerId", buyerId);
+		map.put("search", search);
+		return sqlSession.selectList("PurchaseMapper.getPurchaseList", map);
 	}
+	
 
 	// 게시판 Page 처리를 위한 전체 Row(totalCount)  return
-	public int getTotalCount(Search search) throws Exception {
-		return sqlSession.selectOne("PurchaseMapper.getTotalCount", search);
+	public int getTotalCount(String buyerId) throws Exception {
+		return sqlSession.selectOne("PurchaseMapper.getTotalCount", buyerId);
 	}
-	
+
 }

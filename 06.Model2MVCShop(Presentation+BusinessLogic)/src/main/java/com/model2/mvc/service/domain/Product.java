@@ -69,7 +69,7 @@ public class Product {
 		public String toString() {
 			return "Product : [fileName]" + fileName
 					+ "[manuDate]" + manuDate+ "[price]" + price + "[prodDetail]" + prodDetail
-					+ "[prodName]" + prodName + "[prodNo]" + prodNo;
+					+ "[prodName]" + prodName + "[prodNo]" + prodNo + "[proTranCode]" + proTranCode;
 		}
 	
 }

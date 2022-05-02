@@ -30,8 +30,8 @@
   			#{paymentOption:CHAR},
 			#{receiverName:VARCHAR}, 
 			#{receiverPhone:VARCHAR}, 
-			#{dlvyAddr:VARCHAR}, 
-			#{dlvyRequest:VARCHAR},
+			#{divyAddr:VARCHAR}, 
+			#{divyRequest:VARCHAR},
 			#{tranCode:CHAR}, 
 			SYSDATE, 
 			#{divyDate:DATE} )
@@ -65,36 +65,26 @@
   		WHERE tran_no = #{tranNo}
   	</update>
   	
-  	<select id="getPurchaseList" parameterType="search" resultMap="purchaseSelectMap">
-  		SELECT *
-  		FROM(SELECT inner_table.* , ROWNUM AS row_seq
-	  					FROM		(	SELECT t.tran_no, p.prod_no, t.order_data, t.tran_status_code 
-										FROM transaction t, product p, users u 
-										WHERE t.prod_no = p.prod_no 
-										AND t.buyer_id = u.user_id 
-										AND u.user_id = #{searchKeyword}
-										ORDER BY t.tran_no ) inner_table
-						WHERE ROWNUM &lt;= #{endRowNum} )
-		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
-  	</select>
+  <select  id="getPurchaseList" parameterType="map" resultMap="purchaseSelectMap">
+		SELECT *
+		FROM ( SELECT inner_table.* , ROWNUM AS row_seq
+			FROM ( SELECT tran_no, prod_no, buyer_id, payment_option, receiver_name
+						, receiver_phone, demailaddr, dlvy_request, order_data, dlvy_date
+						,CASE WHEN tran_status_code ='1' THEN '구매완료'
+							WHEN tran_status_code ='2' THEN '배송중'
+							WHEN tran_status_code ='3' THEN '배송완료'
+							ELSE 'DBnull' END AS tran_status_code
+				FROM transaction WHERE buyer_id = #{buyerId}
+				ORDER BY tran_no DESC) inner_table
+			WHERE ROWNUM &lt;= #{search.endRowNum} )
+		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum}
+	</select>
   	
-<!--    <select  id="getTotalCount"  parameterType="search"	 resultType="int">
-	  	SELECT COUNT(*)
-	  	FROM( SELECT prod_no , prod_name , price , reg_date
-						FROM product
-						<if test="searchCondition != null">
-							<where>
-								<if test="searchCondition == 0 and searchKeyword !='' ">
-									prod_no = #{searchKeyword}
-								</if>
-								<if test="searchCondition == 1 and searchKeyword !='' ">
-									prod_name LIKE '%${searchKeyword}%'
-								</if>
-								 <if test="searchCondition == 2 and searchKeyword !='' ">
-									price = #{searchKeyword}
-								</if> 
-							</where>
-						</if> ) countTable						
-	 </select> -->
+    <select  id="getTotalCount" parameterType="map"  resultType="int">
+		SELECT COUNT(*)
+		FROM( SELECT tran_no, prod_no, buyer_id, payment_option, receiver_name, receiver_phone, demailaddr
+					, dlvy_request, NVL(tran_status_code,'3') tran_status_code, order_data, dlvy_date
+			FROM transaction WHERE buyer_id= #{buyerId}) countTable
+	</select>
   	
  </mapper>

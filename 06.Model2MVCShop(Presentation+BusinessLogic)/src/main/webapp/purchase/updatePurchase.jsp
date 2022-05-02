@@ -58,9 +58,9 @@ function fncUpdatePurchase() {
 		<td width="104" class="ct_write">구매자아이디</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<%-- <td class="ct_write01"><%=purchase.getBuyerId().getUserId()%></td> --%>
-		<td class="ct_write01"><${purchase.buyerId.userId}</td>
+		<td class="ct_write01">${purchase.buyerId.userId}</td>
 		<%-- <input type="hidden" name="buyerId" value="<%=purchase.getBuyerId().getUserId()%>"/> --%>
-		<input type="hidden" name="buyerId" value="${purchase.buyerId.userId}"/>
+		<input type="hidden" name="buyer.userId" value="${purchase.buyerId.userId}">
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
@@ -108,7 +108,7 @@ function fncUpdatePurchase() {
 		<td width="104" class="ct_write">구매자주소</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<input 	type="text" name="receiverAddr" class="ct_input_g" style="width: 100px; height: 19px" 
+			<input 	type="text" name="divyAddr" class="ct_input_g" style="width: 100px; height: 19px" 
 							<%-- maxLength="20" value="<%= purchase.getDivyAddr() %>" /> --%>
 							maxLength="20" value="${purchase.divyAddr}" />
 		</td>
@@ -120,7 +120,7 @@ function fncUpdatePurchase() {
 		<td width="104" class="ct_write">구매요청사항</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<input 	type="text" name="receiverRequest" 	class="ct_input_g" style="width: 100px; height: 19px" 
+			<input 	type="text" name="divyRequest" 	class="ct_input_g" style="width: 100px; height: 19px" 
 							<%-- maxLength="20" value="<%= purchase.getDivyRequest() %>" /> --%>
 							maxLength="20" value="${purchase.divyRequest}" />
 		</td>

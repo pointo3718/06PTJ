@@ -1,5 +1,7 @@
 package com.model2.mvc.service.purchase.impl;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +39,13 @@ public class PurchaseServiceImpl implements PurchaseService {
 		purchaseDao.updatePurchase(purchase);
 	}
 	public Map<String, Object> getPurchaseList(Search search, String buyerId) throws Exception {
-		return purchaseDao.getPurchaseList(search, buyerId);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", purchaseDao.getPurchaseList(search, buyerId));
+		map.put("totalCount", new Integer(purchaseDao.getTotalCount(buyerId)));
+		
+		return map;
 	}
+	
 	public void updateTranCode(Purchase purchase) throws Exception {
 		purchaseDao.updateTranCode(purchase);
 	}
