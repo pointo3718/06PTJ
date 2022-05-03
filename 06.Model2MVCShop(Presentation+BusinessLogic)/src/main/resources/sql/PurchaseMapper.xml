@@ -62,18 +62,14 @@
   		<set>
   			tran_status_code = #{tranCode:CHAR}
   		</set>
-  		WHERE tran_no = #{tranNo}
+  		WHERE prod_no = #{purchaseProd.prodNo}
   	</update>
   	
   <select  id="getPurchaseList" parameterType="map" resultMap="purchaseSelectMap">
 		SELECT *
 		FROM ( SELECT inner_table.* , ROWNUM AS row_seq
 			FROM ( SELECT tran_no, prod_no, buyer_id, payment_option, receiver_name
-						, receiver_phone, demailaddr, dlvy_request, order_data, dlvy_date
-						,CASE WHEN tran_status_code ='1' THEN '구매완료'
-							WHEN tran_status_code ='2' THEN '배송중'
-							WHEN tran_status_code ='3' THEN '배송완료'
-							ELSE 'DBnull' END AS tran_status_code
+						, receiver_phone, demailaddr, dlvy_request,tran_status_code , order_data, dlvy_date
 				FROM transaction WHERE buyer_id = #{buyerId}
 				ORDER BY tran_no DESC) inner_table
 			WHERE ROWNUM &lt;= #{search.endRowNum} )
@@ -83,7 +79,7 @@
     <select  id="getTotalCount" parameterType="map"  resultType="int">
 		SELECT COUNT(*)
 		FROM( SELECT tran_no, prod_no, buyer_id, payment_option, receiver_name, receiver_phone, demailaddr
-					, dlvy_request, NVL(tran_status_code,'3') tran_status_code, order_data, dlvy_date
+					, dlvy_request, tran_status_code, order_data, dlvy_date
 			FROM transaction WHERE buyer_id= #{buyerId}) countTable
 	</select>
   	

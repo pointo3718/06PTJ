@@ -51,19 +51,20 @@
  <select  id="getProductList"  parameterType="search" resultMap="productSelectMap">
 	  	SELECT *
 	  	FROM ( SELECT inner_table.* , ROWNUM AS row_seq
-	  					FROM ( SELECT p.prod_no , p.prod_name , p.price , p.reg_date, NVL(t.tran_status_code,0)
-											FROM product p, transaction t
+	  					FROM ( SELECT p.prod_no , p.prod_name , p.price , p.reg_date, NVL(t.tran_status_code,0) tran_status_code
+											FROM product p, transaction t WHERE p.prod_no = t.prod_no(+)
 											<if test="searchCondition != null">
 												<where>
 													<if test="searchCondition == 0 and searchKeyword !='' ">
-										 				p.prod_no = #{searchKeyword}
+										 				AND p.prod_no = #{searchKeyword}
 													</if>
 													<if test="searchCondition == 1 and searchKeyword !='' ">
-										 				p.prod_name LIKE '%${searchKeyword}%'
+										 				AND p.prod_name LIKE '%${searchKeyword}%'
 													</if>
 													 <if test="searchCondition == 2 and searchKeyword !='' ">
-										 				p.price = #{searchKeyword}
+										 				AND p.price = #{searchKeyword}
 													</if> 
+													
 												</where>
 											</if>
 											ORDER BY p.prod_no ) inner_table
@@ -73,15 +74,15 @@
 	 
  <select  id="getTotalCount"  parameterType="search"	 resultType="int">
 	  	SELECT COUNT(*)
-	  	FROM( SELECT p.prod_no , p.prod_name , p.price , p.reg_date , NVL(t.tran_status_code,0)
-						FROM product p , transaction t
+	  	FROM( SELECT p.prod_no , p.prod_name , p.price , p.reg_date , NVL(t.tran_status_code,0) tran_status_code
+						FROM product p , transaction t WHERE p.prod_no = t.prod_no(+)
 						<if test="searchCondition != null">
 							<where>
 								<if test="searchCondition == 0 and searchKeyword !='' ">
-									p.prod_no = #{searchKeyword}
+									AND p.prod_no = #{searchKeyword}
 								</if>
 								<if test="searchCondition == 1 and searchKeyword !='' ">
-									p.prod_name LIKE '%${searchKeyword}%'
+									AND p.prod_name LIKE '%${searchKeyword}%'
 								</if>
 								 <if test="searchCondition == 2 and searchKeyword !='' ">
 									p.price = #{searchKeyword}

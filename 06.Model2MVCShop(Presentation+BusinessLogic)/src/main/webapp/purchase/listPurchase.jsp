@@ -146,14 +146,15 @@ function fncGetList(currentPage) {
 		<td></td>
 		<td align="left">현재 
 		<c:choose>
-				<c:when test="${purchase.tranCode eq '0'}">판매중</c:when>
-				<c:when test="${purchase.tranCode eq '1'}">구매완료</c:when>
-				<c:when test="${purchase.tranCode eq '2'}">배송중</c:when>
+				<c:when test="${purchase.tranCode.trim() eq '0'}">판매중</c:when>
+				<c:when test="${purchase.tranCode.trim() eq '1'}">구매완료</c:when>
+				<c:when test="${purchase.tranCode.trim() eq '2'}">배송중</c:when>
 				<c:otherwise>배송완료</c:otherwise>	
 			</c:choose>
 			 상태 입니다.</td>
+		<td></td>
 		<td align="left">
-			<c:if test="${purchase.tranCode eq '2'}">
+			<c:if test="${purchase.tranCode.trim()  eq '2'}">
 				<a href="/updateTranCode.do?prodNo=${purchase.purchaseProd.prodNo}&tranCode=3">물건도착</a>
 			</c:if>
 		</td>

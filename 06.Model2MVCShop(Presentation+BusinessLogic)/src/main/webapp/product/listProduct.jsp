@@ -205,8 +205,8 @@ function fncGetList(currentPage) {
 				배송완료
 			<%} %> --%>
 			<c:choose>
-				<c:when test="${product.proTranCode eq '0'}">판매중</c:when>
-				<c:when test="${product.proTranCode eq '1'}">
+				<c:when test="${product.proTranCode.trim() eq '0'}">판매중</c:when>
+				<c:when test="${product.proTranCode.trim() eq '1'}">
 					<c:choose>
 						<c:when test="${menu eq 'manage'}">
 							구매완료 <a href="/updateTranCode.do?prodNo=${product.prodNo}&tranCode=2&menu=${menu}">배송하기</a>
@@ -216,7 +216,7 @@ function fncGetList(currentPage) {
 						</c:when>
 					</c:choose>
 				</c:when>
-				<c:when test="${product.proTranCode eq '2'}">배송중</c:when>
+				<c:when test="${product.proTranCode.trim() eq '2'}">배송중</c:when>
 				<c:otherwise>배송완료</c:otherwise>	
 			</c:choose>
 		<tr>

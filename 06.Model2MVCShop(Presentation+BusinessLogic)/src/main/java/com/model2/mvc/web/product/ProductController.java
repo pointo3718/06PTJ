@@ -123,6 +123,8 @@ public class ProductController {
 		model.addAttribute("menu",menu);
 		model.addAttribute("resultPage", resultPage);
 		model.addAttribute("search", search);
+		model.addAttribute("list",map.get("list"));
+		System.out.println("이번맵에는 뭐가들어있을까요?"+map);
 		
 		return "forward:/product/listProduct.jsp";
 	}

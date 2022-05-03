@@ -112,31 +112,24 @@ public class PurchaseController {
 			return modelAndView;
 		}
 		
-//		@RequestMapping("/updateTranCodeByProd.do")
-//		public ModelAndView updateTranCodeByProdAction(@ModelAttribute("product")Product product
-//														) throws Exception{
-//			
-//			Purchase purchase = new Purchase();
-//			purchase.setPurchaseProd(product);
-//			purchase.setTranCode("1");
-//			purchaseService.updateTranCode(purchase);
-//			
-//			ModelAndView modelAndView = new ModelAndView();
-//			modelAndView.setViewName("redirect:/listProduct.do?menu=manage");
-//			return modelAndView;
-//		}
-//		
-//		@RequestMapping("/updateTranCode.do")
-//		public ModelAndView updateTranCode(@ModelAttribute("purchase")Purchase purchase
-//											) throws Exception{
-//			
-//			purchase.setTranCode("2");
-//			purchaseService.updateTranCode(purchase);
-//			
-//			ModelAndView modelAndView = new ModelAndView();
-//			modelAndView.setViewName("redirect:/listPurchase.do");
-//			return modelAndView;
-//		}
+		@RequestMapping("/updateTranCode.do")
+		public ModelAndView updateTranCode(@ModelAttribute("purchase")Purchase purchase , @ModelAttribute("product") Product product,HttpServletRequest request) throws Exception{
+			
+			product.setProdNo(Integer.parseInt(request.getParameter("prodNo")));
+			purchase.setPurchaseProd(product);
+			
+			String tranCode = request.getParameter("tranCode").trim();
+			purchaseService.updateTranCode(purchase);
+			
+			ModelAndView modelAndView = new ModelAndView();
+			if(tranCode.equals("1")) {
+				modelAndView.setViewName("redirect:/listProduct.do?menu=manage");
+				
+			}else {
+				modelAndView.setViewName("redirect:/listProduct.do?menu=search");
+			}
+			return modelAndView;
+		}
 //		
 		@RequestMapping("/listPurchase.do")
 		public ModelAndView listPurchase(@ModelAttribute("search")Search search
